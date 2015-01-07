@@ -22,7 +22,7 @@
 		
 		void vert(inout appdata_full v, out Input o)
 		{		
-			float len =  (_Radius - length(v.vertex.xyz))*((sin(_Time * _Speed) + 1) / 2);
+			float len =  (_Radius - length(v.vertex.xyz))*((sin(_Time * _Speed)) / 3);
 			v.vertex.xyz = v.vertex.xyz + normalize(v.vertex.xyz) * len;
 			v.normal = normalize(v.vertex.xyz);
 		}
