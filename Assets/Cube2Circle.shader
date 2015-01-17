@@ -1,8 +1,8 @@
 ﻿Shader "Custom/Cube2Circle" {
 	Properties {
-		_MainTex ("Base (RGB)", 2D) = "white" {}
-		_Radius ("Radius", Range(0,1)) = 2
-		_Speed("Speed", Range(0.1, 80)) = 5
+		_Radius ("Radius", Float) = 2
+		_Speed("Speed", Float) = 5
+        _Color ("Main Color", Color) = (1,1,1,1)
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -11,7 +11,7 @@
 		CGPROGRAM
 		#pragma surface surf Lambert vertex:vert
 
-		sampler2D _MainTex;
+		fixed4 _Color;
 		float _Speed;
 		float _Radius;
 
@@ -22,15 +22,14 @@
 		
 		void vert(inout appdata_full v, out Input o)
 		{		
-			float len =  (_Radius - length(v.vertex.xyz))*((sin(_Time * _Speed)) / 3);
+			float len =  (_Radius - length(v.vertex.xyz))*((sin(_Time * _Speed) + 1)/2);
 			v.vertex.xyz = v.vertex.xyz + normalize(v.vertex.xyz) * len;
 			v.normal = normalize(v.vertex.xyz);
 		}
 
 		void surf (Input IN, inout SurfaceOutput o) {
-			half4 c = tex2D (_MainTex, IN.uv_MainTex);
-			o.Albedo = c.rgb;
-			o.Alpha = c.a;
+			o.Albedo = _Color.rgb;
+			o.Alpha = _Color.a;
 		}
 		ENDCG
 	} 
